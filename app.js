@@ -36,18 +36,39 @@ app.use('/books', books);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  const err = new Error('err');
+  err.status = 404;
+  err.message = "Oops, page not found. It looks like that route simply does not exist...";
+  res.render('page-not-found');
+  next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = err;
+  if (err.status === undefined) {
+    err.status = 500;
+    err.message = "Whoops... there was a problem handling your request (Error 500)";
+    console.log(err.message);
+    res.status(err.status);
+    res.render('error');
+  } else {
+    err.message = "Whoops... the page you're looking for cannot be found (Error 404)";
+    console.log(err.message);
+    res.status(err.status);
+    res.render('page-not-found');
+  }
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // // set locals, only providing error in development
+  // res.locals.message = err.message;
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // // render the error page
+  // res.status(err.status || 500);
+  // res.render('error');
 });
+
+
+  
 
 module.exports = app;

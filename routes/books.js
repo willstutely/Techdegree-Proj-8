@@ -17,17 +17,17 @@ function asyncHandler(cb) {
   }
 };
 
-
-
 /* GET home page. */
 router.get('/', async (req, res, next) => {
-  const books = await Book.findAll();
-  console.log(res.json(books));
+  // const books = await Book.findAll();
+  // console.log(res.json(books));
+  res.render("books/layout")
 });
 
 /* Create a New Book Form */
 router.get('/new', (req, res) => {
   res.render("books/new-book", { book: {}, title: "New Book" })
+
 });
 
 /* POST Create Book */
