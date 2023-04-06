@@ -20,13 +20,13 @@ function asyncHandler(cb) {
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   const books = await Book.findAll();
-  res.render("books/layout", {books: books})
+  res.render("index", {books: books})
 });
 
 /* GET home page. */
 router.get('/books', async (req, res, next) => {
   const books = await Book.findAll();
-  res.render("books/layout", {books: books})
+  res.render("index", {books: books})
 });
 
 /* Create a New Book Form */

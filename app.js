@@ -38,8 +38,8 @@ app.use('/books', books);
 app.use(function(req, res, next) {
   const err = new Error('err');
   err.status = 404;
-  err.message = "Oops, page not found. It looks like that route simply does not exist...";
-  // res.render('page-not-found');
+  err.message = "We're sorry! In spite of intense effort, and much hand wringing we simply could not find the route you were looking for...(Error 404)";
+  res.render('page-not-found', {err: err.message});
   next(err);
 });
 
@@ -56,7 +56,6 @@ app.use(function(err, req, res, next) {
     err.message = "Whoops... the page you're looking for cannot be found (Error 404)";
     console.log(err.message);
     res.status(err.status);
-    res.render('page-not-found');
   }
 });
 
