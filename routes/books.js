@@ -23,10 +23,15 @@ router.get('/', async (req, res, next) => {
   res.render("books/layout", {books: books})
 });
 
+/* GET home page. */
+router.get('/books', async (req, res, next) => {
+  const books = await Book.findAll();
+  res.render("books/layout", {books: books})
+});
+
 /* Create a New Book Form */
 router.get('/new', (req, res) => {
   res.render("books/new-book", { book: {}, title: "New Book" })
-
 });
 
 /* POST Create Book */
@@ -47,12 +52,19 @@ router.post('/', asyncHandler(async(req, res) => {
 
 /* GET Update a book form */
 router.get('/:id/update', asyncHandler(async (req, res) => {
-  const book = await Book.findByPk(req.params.id)
-  if (book) {
+  let book;
+  try {
+    book = await Book.findByPk(req.params.id)
     res.render("books/update-book", {book: book, title: "Update Book"})
-  } else {
-    res.sendStatus(404)
+  } catch (error) {
+    throw error;
   }
+  // const book = await Book.findByPk(req.params.id)
+  // if (book) {
+  //   res.render("books/update-book", {book: book, title: "Update Book"})
+  // } else {
+  //   res.render("books/book-not-found", {id: req.params.id})
+  // }
 }));
 
 /* POST Update Book */
@@ -64,7 +76,7 @@ router.post('/:id/update', asyncHandler(async (req, res) => {
       await book.update(req.body);
       res.redirect("/books");
     } else {
-      res.sendStatus(404);
+      res.render("books/book-not-found", {id: req.params.id})
     }
   } catch (error) {
     if (error.name === "SequelizeValidationError") {

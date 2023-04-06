@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
   const err = new Error('err');
   err.status = 404;
   err.message = "Oops, page not found. It looks like that route simply does not exist...";
-  res.render('page-not-found');
+  // res.render('page-not-found');
   next(err);
 });
 
