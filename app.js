@@ -51,24 +51,13 @@ app.use(function(err, req, res, next) {
     err.message = "Whoops... there was a problem handling your request (Error 500)";
     console.log(err.message);
     res.status(err.status);
-    res.render('error');
+    res.render('error', {error: err, message: err.message})
   } else {
     err.message = "Whoops... the page you're looking for cannot be found (Error 404)";
     console.log(err.message);
     res.status(err.status);
     res.render('page-not-found');
   }
-
-  // // set locals, only providing error in development
-  // res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // // render the error page
-  // res.status(err.status || 500);
-  // res.render('error');
 });
-
-
-  
 
 module.exports = app;
