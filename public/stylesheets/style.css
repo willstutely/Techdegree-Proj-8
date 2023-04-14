@@ -95,3 +95,18 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+
+.index {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.search {
+  display: inline-block;
+  padding: 15px;
+}
+
+input.search {
+  margin-left: 10px;
+}

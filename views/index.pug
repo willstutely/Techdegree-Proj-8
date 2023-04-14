@@ -2,8 +2,10 @@ extends layout
 
 block content
   h1 Books 
-  p
+  
+  div.index
     a.button(href="/books/new") Create New Book
+    include search
 
   table 
     thead
