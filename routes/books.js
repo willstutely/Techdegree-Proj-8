@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models').Book;
+const {Op} = require('sequelize');
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb) {
@@ -92,9 +93,45 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
 }));
 
 /* Search Route */
-router.post('/search', asyncHandler(async (req, res) => {
-  console.log('testing')
-
+router.post('/search/search', asyncHandler(async (req, res) => {
+  const searchInput = req.body.search;
+  let books;
+  if (searchInput) {
+    try {
+      
+      books = await Book.findAll({
+        where: {
+          [Op.or]: [
+            {author: {
+              [Op.like]: '%' + searchInput + '%'
+            }
+          },
+            {title: {
+              [Op.like]: '%' + searchInput + '%'
+            }
+          },
+            {genre: {
+              [Op.like]: '%' + searchInput + '%'
+            }
+          },
+            {year: {
+              [Op.like]: '%' + searchInput + '%'
+            }
+          }
+        ]
+        }});
+        if (books.length != 0) {
+          res.render("index", {books: books, home: "Back to Home"})
+        } else {
+          res.render("index", {message: "Your search was in vain...", home: "Back to Home"})
+        }
+    } catch (error) {
+      throw error
+    }
+  } else {
+    res.render("index", {message: "The search field was blank...", home: "Back to Home"})
+  }
 }))
 
 module.exports = router;
+

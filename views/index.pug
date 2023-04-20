@@ -6,23 +6,30 @@ block content
   div.index
     a.button(href="/books/new") Create New Book
     include search
-
-  table 
-    thead
-      tr
-        th ID
-        th Title 
-        th Author 
-        th Genre 
-        th Year
-        th 
-    tbody
-      each book in books
+    if(home)
+      a.button(href="/books") #{home}
+  if books
+    table 
+      thead
         tr
-          td= book.id 
-          td= book.title 
-          td= book.author
-          td= book.genre
-          td= book.year
-          td
-            a(href="/books/" + book.id) Edit
+          th ID
+          th Title 
+          th Author 
+          th Genre 
+          th Year
+          th 
+      tbody
+        each book in books
+          tr
+            td= book.id 
+            td= book.title 
+            td= book.author
+            td= book.genre
+            td= book.year
+            td
+              a(href="/books/" + book.id) Edit
+  if message
+    h2= message
+            
+   
+  
