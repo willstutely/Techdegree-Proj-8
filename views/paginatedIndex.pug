@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  h1 Books 
+  
+  div.index
+    a.button(href="/books/new") Create New Book
+    include search
+    if(home)
+      a.button(href="/books") #{home}
+  if books
+    table 
+      thead
+        tr
+          th ID
+          th Title 
+          th Author 
+          th Genre 
+          th Year
+          th 
+      tbody
+        each book in books
+          tr
+            td= book.id 
+            td= book.title 
+            td= book.author
+            td= book.genre
+            td= book.year
+            td
+              a(href="/books/" + book.id) Edit
+  if message
+    h2= message
+            
+  div.pagination
+    nav.pagination(aria-label='Page navigation example')
+        ul.pagination
+          if currentPage > 1
+            li.pagination
+                a(href=`${currentPage - 1}`) Previous
+          - var i = 1;
+          while i <= pages
+            if parseInt(currentPage) === i 
+              li.pagination  
+                a.active(href=`${i}`)= i++ 
+            else
+              li.pagination  
+                a(href=`${i}`)= i++ 
+          if currentPage < pages
+            li.pagination
+                a(href=`${parseInt(currentPage) + 1}`) Next
+  

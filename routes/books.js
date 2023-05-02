@@ -26,6 +26,28 @@ router.get('/books', async (req, res, next) => {
   res.render("index", {books: books})
 });
 
+/* Pagination Home Page 
+Pagination code here heavily influenced by reading Sequelize docs, beating my head against
+the wall trying to figure out how to implement them, and then finding this article on medium.com
+that pieced it together:
+https://medium.com/hackernoon/how-to-paginate-records-in-mysql-using-sequelize-and-nodejs-a3465d12aad5
+*/
+router.get('/testing/:page', async (req, res, next) => {
+  try {
+    let limit = 5;
+    let offset = 0;
+    const {count, rows} = await Book.findAndCountAll()
+    let page = req.params.page;
+    let pages = Math.ceil(count / limit);
+    offset = limit * (page - 1)
+    const books = await Book.findAll({limit: limit, offset: offset})
+    console.log(pages)
+    res.render("paginatedIndex", {books: books, pages: pages, currentPage: page})
+  } catch (error) {
+    throw error
+  }
+})
+
 /* Create a New Book Form */
 router.get('/new', (req, res) => {
   res.render("books/new-book", { book: {}, title: "New Book" })
@@ -93,12 +115,11 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
 }));
 
 /* Search Route */
-router.post('/search/search', asyncHandler(async (req, res) => {
+router.post('/search/results', asyncHandler(async (req, res) => {
   const searchInput = req.body.search;
   let books;
   if (searchInput) {
     try {
-      
       books = await Book.findAll({
         where: {
           [Op.or]: [

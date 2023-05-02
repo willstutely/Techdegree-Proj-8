@@ -110,3 +110,23 @@ input[type=text] {
 input.search {
   margin-left: 10px;
 }
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  border-radius: 2px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #019875;
+  border-radius: 2px;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
