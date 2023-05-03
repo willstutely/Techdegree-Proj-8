@@ -32,12 +32,12 @@ the wall trying to figure out how to implement them, and then finding this artic
 that pieced it together:
 https://medium.com/hackernoon/how-to-paginate-records-in-mysql-using-sequelize-and-nodejs-a3465d12aad5
 */
-router.get('/testing/:page', async (req, res, next) => {
+router.get('/testing', async (req, res, next) => {
   try {
     let limit = 5;
     let offset = 0;
     const {count, rows} = await Book.findAndCountAll()
-    let page = req.params.page;
+    let page = req.query.page;
     let pages = Math.ceil(count / limit);
     offset = limit * (page - 1)
     const books = await Book.findAll({limit: limit, offset: offset})
@@ -107,7 +107,10 @@ router.post('/:id', asyncHandler(async (req, res) => {
 router.post('/:id/delete', asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
-    await book.destroy();
+    await book.destroy({
+      truncate: true,
+      restartIdentity: true
+    });
     res.redirect("/books")
   } else {
     res.sendStatus(404)
@@ -115,7 +118,8 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
 }));
 
 /* Search Route */
-router.post('/search/results', asyncHandler(async (req, res) => {
+router.post('/search/testing', asyncHandler(async (req, res) => {
+  
   const searchInput = req.body.search;
   let books;
   if (searchInput) {
@@ -142,11 +146,13 @@ router.post('/search/results', asyncHandler(async (req, res) => {
         ]
         }});
         if (books.length != 0) {
-          res.render("index", {books: books, home: "Back to Home"})
+          console.log(searchInput)
+          res.render("index", {books: books, searchInput: searchInput, home: "Back to Home"})
         } else {
           res.render("index", {message: "Your search was in vain...", home: "Back to Home"})
         }
     } catch (error) {
+      console.log(searchInput)
       throw error
     }
   } else {

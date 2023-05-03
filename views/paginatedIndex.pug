@@ -38,16 +38,16 @@ block content
         ul.pagination
           if currentPage > 1
             li.pagination
-                a(href=`${currentPage - 1}`) Previous
+                a(href=`?page=${currentPage - 1}`) Previous
           - var i = 1;
           while i <= pages
             if parseInt(currentPage) === i 
               li.pagination  
-                a.active(href=`${i}`)= i++ 
+                a.active(href=`?page=${i}`)= i++ 
             else
               li.pagination  
-                a(href=`${i}`)= i++ 
+                a(href=`?page=${i}`)= i++ 
           if currentPage < pages
             li.pagination
-                a(href=`${parseInt(currentPage) + 1}`) Next
+                a(href=`?page=${parseInt(currentPage) + 1}`) Next
   
