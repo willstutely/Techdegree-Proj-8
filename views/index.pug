@@ -30,6 +30,9 @@ block content
               a(href="/books/" + book.id) Edit
   if message
     h2= message
-            
-   
+
+  // Conditional inclusion of a "switch to paginate" mode
+  if !home
+    p
+      a.button(href="/books/pagination?page=1") Paginate
   

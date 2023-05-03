@@ -32,7 +32,7 @@ the wall trying to figure out how to implement them, and then finding this artic
 that pieced it together:
 https://medium.com/hackernoon/how-to-paginate-records-in-mysql-using-sequelize-and-nodejs-a3465d12aad5
 */
-router.get('/testing', async (req, res, next) => {
+router.get('/pagination', async (req, res, next) => {
   try {
     let limit = 5;
     let offset = 0;
@@ -41,7 +41,6 @@ router.get('/testing', async (req, res, next) => {
     let pages = Math.ceil(count / limit);
     offset = limit * (page - 1)
     const books = await Book.findAll({limit: limit, offset: offset})
-    console.log(pages)
     res.render("paginatedIndex", {books: books, pages: pages, currentPage: page})
   } catch (error) {
     throw error
@@ -118,9 +117,9 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
 }));
 
 /* Search Route */
-router.post('/search/testing', asyncHandler(async (req, res) => {
+router.get('/search/results', asyncHandler(async (req, res) => {
   
-  const searchInput = req.body.search;
+  const searchInput = req.query.search;
   let books;
   if (searchInput) {
     try {
