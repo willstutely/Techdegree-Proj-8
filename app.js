@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -7,7 +6,6 @@ var logger = require('morgan');
 var routes = require('./routes/index');
 var books = require('./routes/books');
 const { Sequelize } = require('sequelize');
-// const paginate = require('express-paginate');
 
 var app = express();
 
@@ -17,6 +15,7 @@ const sequelize = new Sequelize({
   logging: false
 });
 
+// Sync with the database
 (async () => {
   await sequelize.sync();
   console.log("Connection to the database was a success...")
@@ -31,9 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '/public')));
-
-// Pagination Middleware
-// app.use(paginate.middleware(10, 50));
 
 app.use('/', routes);
 app.use('/books', books);

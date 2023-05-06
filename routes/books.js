@@ -118,7 +118,6 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
 
 /* Search Route */
 router.get('/search/results', asyncHandler(async (req, res) => {
-  
   const searchInput = req.query.search;
   let books;
   if (searchInput) {
@@ -145,13 +144,11 @@ router.get('/search/results', asyncHandler(async (req, res) => {
         ]
         }});
         if (books.length != 0) {
-          console.log(searchInput)
           res.render("index", {books: books, searchInput: searchInput, home: "Back to Home"})
         } else {
           res.render("index", {message: "Your search was in vain...", home: "Back to Home"})
         }
     } catch (error) {
-      console.log(searchInput)
       throw error
     }
   } else {
