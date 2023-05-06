@@ -144,7 +144,7 @@ router.get('/search/results', asyncHandler(async (req, res) => {
         ]
         }});
         if (books.length != 0) {
-          res.render("index", {books: books, searchInput: searchInput, home: "Back to Home"})
+          res.render("index", {books: books, home: "Back to Home"})
         } else {
           res.render("index", {message: "Your search was in vain...", home: "Back to Home"})
         }
